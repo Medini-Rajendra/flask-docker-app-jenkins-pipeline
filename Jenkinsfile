@@ -19,6 +19,7 @@ pipeline {
             steps {
                 sh 'docker image build -t $DOCKER_HUB_REPO:latest .'
                 sh 'docker image tag $DOCKER_HUB_REPO:latest $DOCKER_HUB_REPO:$BUILD_NUMBER'
+                //add credential to solve access denied issue
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 //  Pushing Image to Repository
                 sh 'docker push mach512/testflask:$BUILD_NUMBER'
