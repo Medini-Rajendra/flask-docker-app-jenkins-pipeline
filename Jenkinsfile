@@ -22,8 +22,8 @@ pipeline {
 
                 //  Pushing Image to Repository
                 withDockerRegistry([usernamePassword(credentialsId: "docker-hub-credentials", usernameVariable: 'mach512', passwordVariable: 'dbZZ@2005')]) {
-                    sh 'docker push mach512/testflask:$BUILD_NUMBER'
-                    sh 'docker push mach512/testflask:latest'
+                    bat "docker push mach512/testflask:$BUILD_NUMBER"
+                    bat "docker push mach512/testflask:latest"
                 }
                 
                 echo "Image built and pushed to repository"
