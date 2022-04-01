@@ -16,20 +16,14 @@ pipeline {
         }
         stage('Build') {
             steps {
+                sh 'docker image build -t $DOCKER_HUB_REPO:latest .'
+                sh 'docker image tag $DOCKER_HUB_REPO:latest $DOCKER_HUB_REPO:$BUILD_NUMBER'
+
                 //  Pushing Image to Repository
-                withCredentials([usernamePassword( credentialsId: 'docker-hub-credentials', usernameVariable: 'mach512', passwordVariable: 'dbZZ@2005')]) {
-                    def registry_url = "registry.hub.docker.com/"
-                    bat "docker login -u $USER -p $PASSWORD ${registry_url}"
-                    docker.withRegistry("https://${registry_url}", "docker-hub-credentials") {
-                    //  Building new image
-                        bat 'docker image build -t $DOCKER_HUB_REPO:latest .'
-                        bat 'docker image tag $DOCKER_HUB_REPO:latest $DOCKER_HUB_REPO:$BUILD_NUMBER'
-                    // Push your image now
-                        bat "docker push mach512/testflask:$BUILD_NUMBER"
-                        bat "docker push mach512/testflask:latest"
-                        echo "Image built and pushed to repository"
-                    }
-                }
+                sh 'docker push mach512/testflask:$BUILD_NUMBER'
+                sh 'docker push mach512/testflask:latest'
+                
+                echo "Image built and pushed to repository"
             }
         }
         stage('Deploy') {
