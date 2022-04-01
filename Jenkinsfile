@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_REPO = "testflask/test"
+        DOCKER_HUB_REPO = "mach512/testflask"
         CONTAINER_NAME = "flask-container"
         STUB_VALUE = "200"
     }
