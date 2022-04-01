@@ -21,7 +21,7 @@ pipeline {
                 sh 'docker image tag $DOCKER_HUB_REPO:latest $DOCKER_HUB_REPO:$BUILD_NUMBER'
 
                 //  Pushing Image to Repository
-                withDockerRegistry([usernamePassword(credentialsId: "docker-hub-credentials", usernameVariable: 'mach512', passwordVariable: 'dbZZ@2005')]) {
+                withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
                     bat "docker push mach512/testflask:$BUILD_NUMBER"
                     bat "docker push mach512/testflask:latest"
                 }
