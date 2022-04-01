@@ -21,11 +21,15 @@ pipeline {
                 sh 'docker image tag $DOCKER_HUB_REPO:latest $DOCKER_HUB_REPO:$BUILD_NUMBER'
 
                 //  Pushing Image to Repository
-                withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
-                    bat "docker push mach512/testflask:$BUILD_NUMBER"
-                    bat "docker push mach512/testflask:latest"
+                withCredentials([usernamePassword( credentialsId: 'docker-hub-credentials', usernameVariable: 'mach512', passwordVariable: 'dbZZ@2005')]) {
+                    def registry_url = "registry.hub.docker.com/"
+                    bat "docker login -u $USER -p $PASSWORD ${registry_url}"
+                    docker.withRegistry("http://${registry_url}", "docker-hub-credentials") {
+                        // Push your image now
+                        bat "docker push mach512/testflask:$BUILD_NUMBER"
+                        bat "docker push mach512/testflask:latest"
+                    }
                 }
-                
                 echo "Image built and pushed to repository"
             }
         }
