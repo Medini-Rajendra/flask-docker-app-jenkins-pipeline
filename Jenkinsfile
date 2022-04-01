@@ -18,9 +18,9 @@ pipeline {
             steps {
                 //  Pushing Image to Repository
                 withCredentials([usernamePassword( credentialsId: 'docker-hub-credentials', usernameVariable: 'mach512', passwordVariable: 'dbZZ@2005')]) {
-                    registry_url = "registry.hub.docker.com/"
+                    def registry_url = "registry.hub.docker.com/"
                     bat "docker login -u $USER -p $PASSWORD ${registry_url}"
-                    withDockerRegistry("http://${registry_url}", "docker-hub-credentials") {
+                    docker.withRegistry("http://${registry_url}", "docker-hub-credentials") {
                     //  Building new image
                         bat 'docker image build -t $DOCKER_HUB_REPO:latest .'
                         bat 'docker image tag $DOCKER_HUB_REPO:latest $DOCKER_HUB_REPO:$BUILD_NUMBER'
